@@ -14,6 +14,7 @@ import com.sky.vo.EmployeeLoginVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -97,6 +98,21 @@ public class EmployeeController {
     public Result startOrStop(@PathVariable Integer status,Long id){
         log.info("啟用禁用員工帳號: {},{}",status,id);
         employeeService.startOrStop(status,id);
+        return Result.success();
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation("根據id查詢員工信息")
+    public Result<Employee> getById(@PathVariable Long id){
+        Employee employee = employeeService.getById(id);
+        return Result.success(employee);
+    }
+
+    @PutMapping
+    @ApiOperation("編輯員工信息")
+    public Result update(@RequestBody EmployeeDTO employeeDTO){
+        log.info("編輯員工信息: {}",employeeDTO);
+        employeeService.update(employeeDTO);
         return Result.success();
     }
 }
